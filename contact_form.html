@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Contact Form</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+	
+	<style>
+		.{
+			margin: 0px;
+			padding: 0px;
+			box-sizing: border-box;
+		}
+
+		.body{
+			font-family: "Roboto",sans-serif;
+			background: #f5f5f5;
+		}
+
+		.login-form{
+			border-radius: 10px;
+			border: 3px solid black;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			width: 90%;
+			max-width: 450px;
+			background:linear-gradient(-135deg,#6666ff,#ff66ff);
+			padding: 20px 30px;
+			font-family: "Montserrat" ,sans-serif;
+			font-size: 10px;
+			font-weight: bolder;
+
+		}
+
+		.login-form .form-title{
+			font-family: "Montserrat" ,sans-serif;
+			text-align: center;
+			font-size: 40px;
+			font-weight: bolder;
+			margin: 20px 0px 20px;
+			color: #111;
+		}
+
+		.login-form .form-input{
+			margin: 6px 0px;
+		}
+
+		.login-form .form-input label,
+		.login-form .captcha label{
+			display: block;
+			font-size:17px;
+			color: #111;
+			margin-bottom: 8px;
+		}
+		.login-form .form-input input{
+			width: 100%;
+			padding: 8px;
+			border: 2px solid green;
+			font-size: 15px;
+
+		}
+		.login-form .captcha{
+			margin: 7px 0px;
+		}
+		.login-form .captcha .preview{
+			color: #ff4500;
+			width: 100%;
+			text-align: center;
+			height: 40px;
+			line-height: 40px;
+			letter-spacing: 8px;
+			border: 2px solid green;
+			font-size: 30px;
+			font-weight: bold;
+			background:white;
+		}
+		.login-form .captcha .preview span{
+			display: inline-block;
+			user-select: none;
+
+		}
+		.login-form .captcha .captcha-form{
+			display:flex;
+		}
+		.login-form .captcha .captcha-form input{
+			width: 100%;
+			padding: 8px;
+			border: 2px solid green;
+			text-align: center;
+			font-size: 20px;
+			margin-top: 4px;
+			
+		}
+		.login-form .captcha .captcha-form .captcha-refresh{
+			width: 40px;
+			border: 2px solid green;
+			outline: none;
+			background-image:#888;
+			cursor: pointer;
+			font-size: 25px;
+			margin-top: 4px;	
+		}
+		.login-form #login-btn{
+			width: 50%;
+			padding: 7px;
+			border-radius: 30px;
+			outline: none;
+			font-size: 25px;
+			text-transform: uppercase;
+			background: #66ff99;
+			color: black;
+			cursor: pointer;
+			border: 2px solid black;
+			font-weight: bold;
+		}
+		#subject
+		{
+			border: 2px solid green;
+			width: 100%;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+		<div class="login-form">
+			<div class="form-title">
+				Contact-Form
+			</div>
+
+			<div class="form-input">
+				<label for="name">Name</label>
+				<input type="text" id="name" placeholder="Your name">
+			</div>
+
+			<div class="form-input">
+				<label for="email">Email</label>
+				<input type="email" id="email" placeholder="Email id">
+			</div>
+
+			<div class="form-input">
+				<label for="phone">Phone</label>
+				<input type="text" id="phone" placeholder="Phone no.">
+			</div>
+
+			<div class="form-input">
+				<label for="message">Subject</label>
+				<textarea id="subject" rows="4" placeholder="How can we help you?"></textarea>
+			</div>
+				<div class="captcha">
+					<label for="captcah-input">Enter captcha</label>
+					<div class="preview"></div>
+					<div class="captcha-form">
+						<input type="text" id="captcha-form" placeholder="Enter captcha text">
+						<button class="captcha-refresh">
+							<i class="fa fa-refresh"></i>
+						</button>
+					</div>	
+				</div>
+				<center>
+				<div class="form-input">
+					<button id="login-btn">SUBMIT</button>
+				</div>	
+			</center>
+		</div>
+	
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
+<script>
+	(function(){
+		const fonts=["cursive","sans-serif","serif","monospace"];
+		let captchaValue="";
+		function generateCaptcha(){
+			let value = btoa(Math.random()*1000000000);
+			value=value.substr(0,4+Math.random()*3);
+			captchaValue=value;
+			}
+
+		function setCaptcha(){
+			let html=captchaValue.split("").map((char)=>{
+				const rotate=-20+Math.trunc(Math.random()*30);
+				const font=Math.trunc(Math.random()*fonts.length);
+				return `<span style="transform:rotate(${rotate}deg);
+					font-family:${fonts[font]}"> ${char} </span>`;
+				}).join("");
+			document.querySelector(".login-form .captcha .preview").innerHTML=html;
+			}
+		function initCaptcha(){
+			document.querySelector(".login-form .captcha .captcha-refresh").addEventListener("click",function(){
+				generateCaptcha();
+				setCaptcha();
+			});
+			generateCaptcha();
+			setCaptcha();
+		}
+		initCaptcha();
+
+			document.querySelector(".login-form #login-btn").addEventListener("click",function(){
+				let inputCaptchaValue=document.querySelector(".login-form .captcha input").value;
+				const nm=document.getElementById("name").value;
+				const em=document.getElementById("email").value;
+				const ph=document.getElementById("phone").value;
+				const sub=document.getElementById("subject").value;
+				if(nm=="")
+				{
+					swal("Please Enter Name !!");
+				}
+				else if(em=="")
+				{
+					swal("Please Enter Email id !!");
+				}
+				else if(ph=="")
+				{
+					swal("Please Enter Phone no. !!");
+				}
+				else if(sub=="")
+				{
+					swal("Please Enter Subject !!");
+				}
+				else
+				{
+					if(inputCaptchaValue===captchaValue)
+					{
+						swal("","Submit Successfully !!","success");
+					}
+					else if(inputCaptchaValue==="")
+					{
+						swal("Enter captcha !!");
+					}
+					else
+					{
+						swal("Invalid captcha !!");
+					}
+				}
+				em.value="";
+			});	
+	})();
+</script>
+</body>
+</html>
